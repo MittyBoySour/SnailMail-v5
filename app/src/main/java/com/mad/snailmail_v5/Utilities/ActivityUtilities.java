@@ -1,6 +1,5 @@
-package Utilities;
+package com.mad.snailmail_v5.Utilities;
 
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;

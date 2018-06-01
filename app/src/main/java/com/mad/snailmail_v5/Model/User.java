@@ -1,4 +1,4 @@
-package Model;
+package com.mad.snailmail_v5.Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;

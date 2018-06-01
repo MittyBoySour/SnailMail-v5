@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 
 import com.mad.snailmail_v5.R;
 
-import Model.Mail;
-import Model.User;
+import com.mad.snailmail_v5.Model.Mail;
+import com.mad.snailmail_v5.Model.User;
 
 
 public class MailListFragment extends Fragment implements MailListContract.View {

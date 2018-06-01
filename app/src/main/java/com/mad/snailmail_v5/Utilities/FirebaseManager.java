@@ -1,4 +1,4 @@
-package Utilities;
+package com.mad.snailmail_v5.Utilities;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import BaseInterfaces.BasePresenter;
-import Model.Mail;
-import Model.User;
+import com.mad.snailmail_v5.Model.Mail;
+import com.mad.snailmail_v5.Model.User;
 
 // maybe user Singleton approach
 // create an interface

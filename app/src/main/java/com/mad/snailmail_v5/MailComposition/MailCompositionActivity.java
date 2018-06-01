@@ -5,8 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.mad.snailmail_v5.R;
 
-import Model.User;
-import Utilities.ActivityUtilities;
+import com.mad.snailmail_v5.Model.User;
+import com.mad.snailmail_v5.Utilities.ActivityUtilities;
 
 public class MailCompositionActivity extends AppCompatActivity {
 

@@ -2,7 +2,7 @@ package com.mad.snailmail_v5.MailComposition;
 
 import BaseInterfaces.BasePresenter;
 import BaseInterfaces.BaseView;
-import Model.User;
+import com.mad.snailmail_v5.Model.User;
 
 public interface MailCompositionContract {
 

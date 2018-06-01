@@ -1,7 +1,7 @@
 package com.mad.snailmail_v5.MailComposition;
 
-import Model.User;
-import Utilities.FirebaseManager;
+import com.mad.snailmail_v5.Model.User;
+import com.mad.snailmail_v5.Utilities.FirebaseManager;
 
 class MailCompositionPresenter implements MailCompositionContract.Presenter {
 

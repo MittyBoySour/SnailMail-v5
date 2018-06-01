@@ -1,17 +1,15 @@
 package com.mad.snailmail_v5.MailList;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.mad.snailmail_v5.R;
 
-import Model.User;
-import Utilities.ActivityUtilities;
+import com.mad.snailmail_v5.Model.User;
+import com.mad.snailmail_v5.Utilities.ActivityUtilities;
 
 // TODO: Make FirebaseManager abstract with separate implementations for activities
-// TODO: Add HashMap (and maybe builders) for each Model (mail, geo) [may not be necessary as cached]
+// TODO: Add HashMap (and maybe builders) for each com.mad.snailmail_v5.Model (mail, geo) [may not be necessary as cached]
 // TODO: Add image storage
 
 public class MailListActivity extends AppCompatActivity {

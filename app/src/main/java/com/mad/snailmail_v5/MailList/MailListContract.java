@@ -2,13 +2,10 @@ package com.mad.snailmail_v5.MailList;
 
 import android.support.v7.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import BaseInterfaces.BasePresenter;
 import BaseInterfaces.BaseView;
-import Model.Mail;
-import Model.User;
+import com.mad.snailmail_v5.Model.Mail;
+import com.mad.snailmail_v5.Model.User;
 
 public interface MailListContract {
 

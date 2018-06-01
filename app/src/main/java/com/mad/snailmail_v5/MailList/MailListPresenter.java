@@ -2,9 +2,9 @@ package com.mad.snailmail_v5.MailList;
 
 import android.support.v7.widget.RecyclerView;
 
-import Model.Mail;
-import Model.User;
-import Utilities.FirebaseManager;
+import com.mad.snailmail_v5.Model.Mail;
+import com.mad.snailmail_v5.Model.User;
+import com.mad.snailmail_v5.Utilities.FirebaseManager;
 
 class MailListPresenter implements MailListContract.Presenter {
 

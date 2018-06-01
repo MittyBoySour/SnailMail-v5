@@ -11,7 +11,7 @@ import com.mad.snailmail_v5.R;
 
 import java.util.ArrayList;
 
-import Model.Mail;
+import com.mad.snailmail_v5.Model.Mail;
 
 public class MailAdapter extends RecyclerView.Adapter<MailAdapter.MailViewHolder> {
 

@@ -1,4 +1,4 @@
-package Model;
+package com.mad.snailmail_v5.Model;
 
 public class Mail {
 
