@@ -1,23 +1,17 @@
-package com.mad.snailmail_v5.MailList;
+package MailComposition;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 
 import com.mad.snailmail_v5.R;
 
 import Model.User;
 import Utilities.ActivityUtilities;
 
-// TODO: Make FirebaseManager abstract with separate implementations for activities
-// TODO: Add HashMap (and maybe builders) for each Model (mail, geo) [may not be necessary as cached]
-// TODO: Add image storage
-
-public class MailListActivity extends AppCompatActivity {
+public class MailCompositionActivity extends AppCompatActivity {
 
     private static final String TAG = "MailListActivity";
-    private MailListPresenter mMailListPresenter;
+    private MailCompositionPresenter mMailCompositionPresenter;
 
     private User mCurrentUser;
 
@@ -36,9 +30,9 @@ public class MailListActivity extends AppCompatActivity {
 
         // may need to restore current state through saved inst bundle
 
-        MailListFragment mailListFragment =
-                (MailListFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.mail_list_fragment_frame);
+        MailCompositionFragment mailListFragment =
+                (MailCompositionFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.mail_composition_fragment_frame);
 
         // TODO: may need to be moved to onAttachFragment()
         if (mailListFragment == null) {
@@ -46,10 +40,10 @@ public class MailListActivity extends AppCompatActivity {
             // Log.d(TAG, "onCreate: " + mailListFragment.toString());
             ActivityUtilities.addFragmentToActivity(
                     getSupportFragmentManager(), mailListFragment,
-                    R.id.mail_list_fragment_frame);
+                    R.id.mail_composition_fragment_frame);
         }
 
-        mMailListPresenter = new MailListPresenter(mailListFragment);
-        mMailListPresenter.setCurrentUser(mCurrentUser);
+        mMailCompositionPresenter = new MailCompositionPresenter(mailListFragment);
+        mMailCompositionPresenter.setCurrentUser(mCurrentUser);
     }
 }

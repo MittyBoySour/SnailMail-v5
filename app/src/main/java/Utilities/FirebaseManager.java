@@ -13,6 +13,7 @@ import com.mad.snailmail_v5.MailList.MailListContract;
 import java.util.ArrayList;
 import java.util.List;
 
+import BaseInterfaces.BasePresenter;
 import Model.Mail;
 import Model.User;
 
@@ -42,9 +43,9 @@ public class FirebaseManager {
     private static ArrayList<Mail> mUserMailList;
     private static ArrayList<User> mUserList;
 
-    private static MailListContract.Presenter mPresenter;
+    private static BasePresenter mPresenter;
 
-    private FirebaseManager(String username, MailListContract.Presenter presenter) {
+    private FirebaseManager(String username, BasePresenter presenter) {
         Log.d(TAG, "FirebaseManager: private construct called");
         mRootDatabaseReference = FirebaseDatabase.getInstance()
                 .getReference();
@@ -61,7 +62,7 @@ public class FirebaseManager {
 
     // may need context
 
-    public static FirebaseManager getInstance(String username, MailListContract.Presenter presenter) {
+    public static FirebaseManager getInstance(String username, BasePresenter presenter) {
 
         if (sInstance == null) {
             Log.d(TAG, "getInstance: pre instance setup");
@@ -158,6 +159,21 @@ public class FirebaseManager {
         };
     }
 
+    private ValueEventListener getUserContactListener() {
+        return new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+    }
+
+
     ////////////// FIREBASE INTERACTION METHODS ///////////////
 
     public void addNewUser(String username) {
@@ -180,6 +196,10 @@ public class FirebaseManager {
     public void addContactForUser(String username, String contactName) {
         // consider whether listener is necessary
         getUserReference(username).child("contact").child(contactName);
+
+        // check whether actually implementing the user list listener resolves this first
+        // (WON'T WORK)
+        // .addListenerForSingleValueEvent(getUserContactListener())
     }
 
     // will add removeContact also that just sets value to false
