@@ -14,7 +14,6 @@ public class Mail {
         // Generic constructor
     }
 
-
     public String getSender() {
         return mSender;
     }
@@ -29,5 +28,13 @@ public class Mail {
 
     public void setRecipient(String recipient) {
         this.mRecipient = recipient;
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public void setTitle(String title) {
+        this.mTitle = title;
     }
 }
