@@ -1,15 +1,20 @@
 package com.mad.snailmail_v5.MailList;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.mad.snailmail_v5.MailComposition.MailCompositionActivity;
 import com.mad.snailmail_v5.R;
 
 import com.mad.snailmail_v5.Model.User;
 import com.mad.snailmail_v5.Utilities.ActivityUtilities;
+
+import static com.mad.snailmail_v5.Constants.ActivityConstants.ActivityKeys.CURRENT_USER_KEY;
 
 // TODO: Make FirebaseManager abstract with separate implementations for activities
 // TODO: Add HashMap (and maybe builders) for each com.mad.snailmail_v5.Model (mail, geo) [may not be necessary as cached]
@@ -17,9 +22,10 @@ import com.mad.snailmail_v5.Utilities.ActivityUtilities;
 
 public class MailListActivity extends AppCompatActivity {
 
-    Button mComposeMailButton;
+    FloatingActionButton mComposeMailFAB;
 
     private static final String TAG = "MailListActivity";
+
     private MailListPresenter mMailListPresenter;
 
     private User mCurrentUser;
@@ -37,6 +43,9 @@ public class MailListActivity extends AppCompatActivity {
             mCurrentUser.setUsername("TestUser0");
         }
 
+        mComposeMailFAB = (FloatingActionButton) findViewById(R.id.compose_mail_fab);
+        mComposeMailFAB.setOnClickListener(getFABClickListener());
+
         // may need to restore current state through saved inst bundle
 
         MailListFragment mailListFragment =
@@ -45,7 +54,7 @@ public class MailListActivity extends AppCompatActivity {
 
         // TODO: may need to be moved to onAttachFragment()
         if (mailListFragment == null) {
-            mailListFragment = mailListFragment.newInstance();
+            mailListFragment = MailListFragment.newInstance();
             // Log.d(TAG, "onCreate: " + mailListFragment.toString());
             ActivityUtilities.addFragmentToActivity(
                     getSupportFragmentManager(), mailListFragment,
@@ -54,5 +63,17 @@ public class MailListActivity extends AppCompatActivity {
 
         mMailListPresenter = new MailListPresenter(mailListFragment);
         mMailListPresenter.setCurrentUser(mCurrentUser);
+    }
+
+    private View.OnClickListener getFABClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MailListActivity.this,
+                        MailCompositionActivity.class);
+                intent.putExtra(CURRENT_USER_KEY, mCurrentUser.getUsername());
+                startActivity(intent);
+            }
+        };
     }
 }

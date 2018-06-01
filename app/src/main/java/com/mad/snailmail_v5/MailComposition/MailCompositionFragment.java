@@ -59,7 +59,7 @@ public class MailCompositionFragment extends Fragment implements MailComposition
         mPresenter = presenter;
     }
 
-    public MailCompositionFragment newInstance() {
+    public static MailCompositionFragment newInstance() {
         return new MailCompositionFragment();
     }
 

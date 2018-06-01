@@ -14,7 +14,6 @@ import com.mad.snailmail_v5.R;
 import com.mad.snailmail_v5.Model.Mail;
 import com.mad.snailmail_v5.Model.User;
 
-
 public class MailListFragment extends Fragment implements MailListContract.View {
 
     private static final String TAG = "MailListFragment";

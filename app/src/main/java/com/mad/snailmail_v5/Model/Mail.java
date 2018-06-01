@@ -62,7 +62,6 @@ public class Mail {
         this.mCollected = collected;
     }
 
-
     public static class Builder {
 
         private String mSender;

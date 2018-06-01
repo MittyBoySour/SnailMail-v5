@@ -32,9 +32,34 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:hint="Delivery Address"/>
+            android:hint="Delivery Location"/>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/item_additions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/delivery_details"
+        android:orientation="horizontal">
+
+        <!-- add spinner search for list of contacts -->
+        <Button
+            android:id="@+id/add_contact"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Add Contact"/>
+
+        <Button
+            android:id="@+id/add_delivery_address"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Add Location"/>
+
+    </LinearLayout>
+
 
     <EditText
         android:id="@+id/composition_message"
@@ -46,7 +71,7 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:scrollbars="vertical"
-        android:layout_below="@+id/delivery_details"
+        android:layout_below="@+id/item_additions"
         android:layout_above="@+id/action_buttons"
         android:hint="Message"
         />
