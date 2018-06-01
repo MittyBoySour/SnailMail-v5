@@ -1,4 +1,4 @@
-package MailComposition;
+package com.mad.snailmail_v5.MailComposition;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

@@ -1,4 +1,4 @@
-package MailComposition;
+package com.mad.snailmail_v5.MailComposition;
 
 import BaseInterfaces.BasePresenter;
 import BaseInterfaces.BaseView;
