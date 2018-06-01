@@ -10,7 +10,7 @@ import Utilities.ActivityUtilities;
 
 public class MailCompositionActivity extends AppCompatActivity {
 
-    private static final String TAG = "MailListActivity";
+    private static final String TAG = "MailCompositionActivity";
     private MailCompositionPresenter mMailCompositionPresenter;
 
     private User mCurrentUser;
@@ -18,7 +18,7 @@ public class MailCompositionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mail_list);
+        setContentView(R.layout.activity_mail_composition);
 
         // ensure user is set
         if (mCurrentUser == null) {
@@ -30,20 +30,19 @@ public class MailCompositionActivity extends AppCompatActivity {
 
         // may need to restore current state through saved inst bundle
 
-        MailCompositionFragment mailListFragment =
+        MailCompositionFragment mailCompositionFragment =
                 (MailCompositionFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.mail_composition_fragment_frame);
 
         // TODO: may need to be moved to onAttachFragment()
-        if (mailListFragment == null) {
-            mailListFragment = mailListFragment.newInstance();
-            // Log.d(TAG, "onCreate: " + mailListFragment.toString());
+        if (mailCompositionFragment == null) {
+            mailCompositionFragment = mailCompositionFragment.newInstance();
             ActivityUtilities.addFragmentToActivity(
-                    getSupportFragmentManager(), mailListFragment,
+                    getSupportFragmentManager(), mailCompositionFragment,
                     R.id.mail_composition_fragment_frame);
         }
 
-        mMailCompositionPresenter = new MailCompositionPresenter(mailListFragment);
+        mMailCompositionPresenter = new MailCompositionPresenter(mailCompositionFragment);
         mMailCompositionPresenter.setCurrentUser(mCurrentUser);
     }
 }

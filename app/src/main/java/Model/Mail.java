@@ -37,4 +37,13 @@ public class Mail {
     public void setTitle(String title) {
         this.mTitle = title;
     }
+
+
+    public boolean isCollected() {
+        return mCollected;
+    }
+
+    public void setCollected(boolean collected) {
+        this.mCollected = collected;
+    }
 }

@@ -10,9 +10,10 @@ public interface MailCompositionContract {
 
         void setCurrentUser(User user);
 
+        void submitMailButtonClicked(String title, String recipient, String message);
     }
 
-    interface View extends BaseView {
+    interface View extends BaseView<Presenter> {
 
     }
 }
