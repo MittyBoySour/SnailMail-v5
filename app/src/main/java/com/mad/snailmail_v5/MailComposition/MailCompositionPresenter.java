@@ -1,5 +1,6 @@
 package com.mad.snailmail_v5.MailComposition;
 
+import com.mad.snailmail_v5.Model.Mail;
 import com.mad.snailmail_v5.Model.User;
 import com.mad.snailmail_v5.Utilities.FirebaseManager;
 
@@ -24,7 +25,13 @@ class MailCompositionPresenter implements MailCompositionContract.Presenter {
 
     @Override
     public void submitMailButtonClicked(String title, String recipient, String message) {
-
+        Mail mail = new Mail.Builder()
+                .setSender(mCurrentUser.getUsername())
+                .setRecipient(recipient)
+                .setTitle(title)
+                .setMessage(message)
+                .build();
+        mFirebaseManager.sendMailToContact(mail);
     }
 
 
