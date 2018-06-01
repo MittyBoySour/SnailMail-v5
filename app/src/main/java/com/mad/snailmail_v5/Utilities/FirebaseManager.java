@@ -13,7 +13,7 @@ import com.mad.snailmail_v5.MailList.MailAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import BaseInterfaces.BasePresenter;
+import com.mad.snailmail_v5.BaseInterfaces.BasePresenter;
 import com.mad.snailmail_v5.Model.Mail;
 import com.mad.snailmail_v5.Model.User;
 

@@ -1,7 +1,7 @@
 package com.mad.snailmail_v5.MailComposition;
 
-import BaseInterfaces.BasePresenter;
-import BaseInterfaces.BaseView;
+import com.mad.snailmail_v5.BaseInterfaces.BasePresenter;
+import com.mad.snailmail_v5.BaseInterfaces.BaseView;
 import com.mad.snailmail_v5.Model.User;
 
 public interface MailCompositionContract {
@@ -11,6 +11,8 @@ public interface MailCompositionContract {
         void setCurrentUser(User user);
 
         void submitMailButtonClicked(String title, String recipient, String message);
+
+        void discardMailButtonClicked();
     }
 
     interface View extends BaseView<Presenter> {

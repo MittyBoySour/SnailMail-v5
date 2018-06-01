@@ -2,8 +2,8 @@ package com.mad.snailmail_v5.MailList;
 
 import android.support.v7.widget.RecyclerView;
 
-import BaseInterfaces.BasePresenter;
-import BaseInterfaces.BaseView;
+import com.mad.snailmail_v5.BaseInterfaces.BasePresenter;
+import com.mad.snailmail_v5.BaseInterfaces.BaseView;
 import com.mad.snailmail_v5.Model.Mail;
 import com.mad.snailmail_v5.Model.User;
 

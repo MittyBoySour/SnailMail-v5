@@ -34,6 +34,11 @@ class MailCompositionPresenter implements MailCompositionContract.Presenter {
         mFirebaseManager.sendMailToContact(mail);
     }
 
+    @Override
+    public void discardMailButtonClicked() {
+        // maybe show confirmation dialogue first
+        // start mail list activity
+    }
 
     @Override
     public void start() {

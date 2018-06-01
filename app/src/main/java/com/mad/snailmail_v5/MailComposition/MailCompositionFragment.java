@@ -80,7 +80,7 @@ public class MailCompositionFragment extends Fragment implements MailComposition
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // start mail list activity
+                mPresenter.discardMailButtonClicked();
             }
         };
     }
@@ -90,6 +90,7 @@ public class MailCompositionFragment extends Fragment implements MailComposition
             @Override
             public boolean onLongClick(View v) {
                 // start locator activity
+                // possibly make into fragment rather than activity and bundle data
                 return false;
             }
         };
@@ -97,9 +98,7 @@ public class MailCompositionFragment extends Fragment implements MailComposition
 
     private void checkDeliveryLocation() {
         // check the passed data to see if location has been selected
-        if (mDeliveryLocationTV.getText().length() == 0) {
-            mDeliveryLocationTV.setText("Hold to Select Delivery Location"); // set as resource
-        }
+
     }
 
 }

@@ -1,7 +1,10 @@
 package com.mad.snailmail_v5.MailList;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.mad.snailmail_v5.R;
 
@@ -13,6 +16,8 @@ import com.mad.snailmail_v5.Utilities.ActivityUtilities;
 // TODO: Add image storage
 
 public class MailListActivity extends AppCompatActivity {
+
+    Button mComposeMailButton;
 
     private static final String TAG = "MailListActivity";
     private MailListPresenter mMailListPresenter;
