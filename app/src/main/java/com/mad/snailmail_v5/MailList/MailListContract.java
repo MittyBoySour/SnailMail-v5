@@ -13,24 +13,17 @@ public interface MailListContract {
 
         void setCurrentUser(User user);
 
-        void updateMailList();
+        void mailListRefreshRequested();
+
+        void updateMailAdapter(MailAdapter mailAdapter);
 
         void addNewUser(String username);
 
-        void addContactForUser(String contactUsername);
-
-        RecyclerView.Adapter getUserMailAdapter();
-
-        void sendMailToContact(Mail mail);
     }
 
     interface View extends BaseView<Presenter> {
 
-        void displayMailListFromAdapter();
-
-        void registerNewUserButtonClicked(String username);
-
-        void addNewContactButtonClicked(String contactUsername);
+        void attachMailAdapter(MailAdapter mailAdapter);
 
         // maybe add functionality to lookup users after a 4 or more chars entered
 

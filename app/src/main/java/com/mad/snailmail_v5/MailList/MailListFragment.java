@@ -11,9 +11,6 @@ import android.view.ViewGroup;
 
 import com.mad.snailmail_v5.R;
 
-import com.mad.snailmail_v5.Model.Mail;
-import com.mad.snailmail_v5.Model.User;
-
 public class MailListFragment extends Fragment implements MailListContract.View {
 
     private static final String TAG = "MailListFragment";
@@ -40,24 +37,10 @@ public class MailListFragment extends Fragment implements MailListContract.View 
         mMailRecyclerView = root.findViewById(R.id.mail_list_recycler);
         mLayoutManager = new LinearLayoutManager(getActivity());// check for null
         mMailRecyclerView.setLayoutManager(mLayoutManager);
-        // get rid of eventually
-        runSeriesOfTestActions();
 
-        displayMailListFromAdapter();
+        mPresenter.mailListRefreshRequested();
 
         return root;
-    }
-
-    @Override
-    public void onPause() {
-        // pause listening on adapter
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // resume listening on adapter
     }
 
     @Override
@@ -70,49 +53,7 @@ public class MailListFragment extends Fragment implements MailListContract.View 
     }
 
     @Override
-    public void registerNewUserButtonClicked(String username) {
-        mPresenter.addNewUser(username);
-    }
-
-    @Override
-    public void addNewContactButtonClicked(String contactUsername) {
-        mPresenter.addContactForUser(contactUsername);
-    }
-
-    public void submitMailButtonClicked(Mail mail) {
-        // compose the mail from the fields in onClick
-        mPresenter.sendMailToContact(mail);
-    }
-
-    //////////////////// FAKE DB SETUP ////////////////
-
-    private void runSeriesOfTestActions() {
-        // user0 actions
-        User testUser0 = new User();
-        testUser0.setUsername("TestUser0");
-        registerNewUserButtonClicked(testUser0.getUsername());
-        // user1 actions
-        User testUser1 = new User();
-        testUser1.setUsername("TestUser1");
-        registerNewUserButtonClicked(testUser1.getUsername());
-        // user0 actions
-        addNewContactButtonClicked(testUser1.getUsername());
-        Mail mailFromUser0 = new Mail();
-        mailFromUser0.setSender(testUser0.getUsername());
-        mailFromUser0.setRecipient(testUser1.getUsername());
-        mailFromUser0.setTitle("Mail 1 title");
-        submitMailButtonClicked(mailFromUser0);
-        // user1 actions
-        addNewContactButtonClicked(testUser0.getUsername());
-        Mail mailFromUser1 = new Mail();
-        mailFromUser1.setSender(testUser1.getUsername());
-        mailFromUser1.setRecipient(testUser0.getUsername());
-        mailFromUser1.setTitle("Re: Mail 1 title");
-        submitMailButtonClicked(mailFromUser1);
-    }
-
-    @Override
-    public void displayMailListFromAdapter() {
-        mMailRecyclerView.setAdapter(mPresenter.getUserMailAdapter());
+    public void attachMailAdapter(MailAdapter mailAdapter) {
+        mMailRecyclerView.setAdapter(mailAdapter);
     }
 }

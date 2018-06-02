@@ -13,9 +13,13 @@ public interface MailCompositionContract {
         void submitMailButtonClicked(String title, String recipient, String message);
 
         void discardMailButtonClicked();
+
+        void DeliveryLocationLongClicked(boolean displayingMap);
+
     }
 
     interface View extends BaseView<Presenter> {
 
+        void showMiddleView(int viewOption);
     }
 }

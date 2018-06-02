@@ -1,7 +1,7 @@
 package com.mad.snailmail_v5.BaseInterfaces;
 
-public interface BaseView<T> {
+public interface BaseView<P> {
 
-    void setPresenter(T presenter);
+    void setPresenter(P presenter);
 
 }

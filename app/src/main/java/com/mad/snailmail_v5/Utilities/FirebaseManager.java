@@ -28,66 +28,67 @@ import com.mad.snailmail_v5.Model.User;
 // using retrofit, gson, and firebase
 // http://sushildlh-retro-firebase.blogspot.com/
 
-public class FirebaseManager {
+public class FirebaseManager<P extends BasePresenter> {
 
     // maybe move to constants file
     private static final String TAG = "FirebaseManager";
+    // change to plurals
     private static final String USER_FILTER = "user";
     private static final String USER_MAIL_FILTER = "mail";
+    private static final String USER_CONTACT_FILTER = "contact";
 
     private static DatabaseReference mRootDatabaseReference;
 
     private static FirebaseManager sInstance;
-    private static MailAdapter mMailAdapter;
 
-    private static ArrayList<Mail> mUserMailList;
-    private static ArrayList<User> mUserList;
+    private static ArrayList<String> mUsernameList;
+    private static ArrayList<String> mUserContactList;
 
-    private static BasePresenter mPresenter;
+    private P mPresenter;
+    private User mCurrentUser;
 
-    private FirebaseManager(String username, BasePresenter presenter) {
-        Log.d(TAG, "FirebaseManager: private construct called");
+    private FirebaseManager() {
         mRootDatabaseReference = FirebaseDatabase.getInstance()
                 .getReference();
-
-        mPresenter = presenter;
-
-        setUserList();
-        setUserMailList(username);
-
-        mUserList = new ArrayList<>();
-        mUserMailList = new ArrayList<>();
-        mMailAdapter = new MailAdapter(mUserMailList);
+        mUsernameList = new ArrayList<>();
+        sendUsernameListRequest();
     }
 
-    // may need context
-
-    public static FirebaseManager getInstance(String username, BasePresenter presenter) {
-
+    public static FirebaseManager getInstance() {
         if (sInstance == null) {
-            Log.d(TAG, "getInstance: pre instance setup");
-
-            sInstance = new FirebaseManager(username, presenter);
-            Log.d(TAG, "getInstance: post instance setup");
-
+            sInstance = new FirebaseManager();
         }
         Log.d(TAG, "getInstance: " + sInstance.toString());
         return sInstance;
     }
 
-    public MailAdapter getUserMailAdapter() {
-        return mMailAdapter;
+    public void setUser(User user) {
+        mCurrentUser = user;
+        sendUserMailListRequest(user.getUsername());
+    }
+
+    public void setPresenter(P presenter) {
+        mPresenter = presenter;
+    }
+
+    public void updateMailList() {
+        sendUserMailListRequest(mCurrentUser.getUsername());
     }
 
     ////////////// CURRENT DB LIST //////////////
 
-    private static void setUserList() {
-        getUserListReference().addListenerForSingleValueEvent(getUserListResponseListener());
+    private void sendUsernameListRequest() {
+        getUserListReference().addListenerForSingleValueEvent(getUsernameListResponseListener());
     }
 
-    private static void setUserMailList(String username) {
+    private void sendUserMailListRequest(String username) {
         getUserMailListReference(username).addListenerForSingleValueEvent(
                 getUserMailListResponseListener());
+    }
+
+    private void sendContactListRequest(String username) {
+        getUserContactListReference(username).addListenerForSingleValueEvent(
+                getUserContactListResponseListener());
     }
 
     // maybe make some of these generic with enums from consts/ints to pass in for diff response
@@ -96,28 +97,32 @@ public class FirebaseManager {
 
     // probably convert to path builder
 
-    private static DatabaseReference getUserMailReference(String username, String mailKey) {
+    private DatabaseReference getUserMailReference(String username, String mailKey) {
         return mRootDatabaseReference.child(USER_FILTER)
                 .child(username).child(USER_MAIL_FILTER).child(mailKey);
     }
 
-
-    private static DatabaseReference getUserMailListReference(String username) {
+    private DatabaseReference getUserMailListReference(String username) {
         return mRootDatabaseReference.child(USER_FILTER)
                 .child(username).child(USER_MAIL_FILTER);
     }
 
-    private static DatabaseReference getUserReference(String username) {
+    private DatabaseReference getUserReference(String username) {
         return mRootDatabaseReference.child(USER_FILTER).child(username);
     }
 
-    private static DatabaseReference getUserListReference() {
+    private DatabaseReference getUserListReference() {
         return mRootDatabaseReference.child(USER_FILTER);
+    }
+
+    private DatabaseReference getUserContactListReference(String username) {
+        return mRootDatabaseReference.child(USER_FILTER).child(username)
+                .child(USER_CONTACT_FILTER);
     }
 
     ////////////// FIREBASE RESPONSE LISTENERS ////////////////
 
-    private static ValueEventListener getUserMailListResponseListener() {
+    private ValueEventListener getUserMailListResponseListener() {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -126,14 +131,14 @@ public class FirebaseManager {
                 // create new MailAdapter with new list data
                 // call presenter to update
                 // presenter will call view to update passing it new adapter
-                mUserMailList.clear();
+                ArrayList<Mail> userMailList = new ArrayList<>();
                 Mail mail;
                 for (DataSnapshot snapshotChild : dataSnapshot.getChildren()) {
                     mail = snapshotChild.getValue(Mail.class);
-                    mUserMailList.add(mail);
+                    // check for collected status
+                    userMailList.add(mail);
                 }
-                mMailAdapter = new MailAdapter(mUserMailList);
-                mPresenter.updateMailList();
+                mPresenter.updateMailAdapter(new MailAdapter(userMailList));
             }
 
             @Override
@@ -145,10 +150,16 @@ public class FirebaseManager {
         };
     }
 
-    private static ValueEventListener getUserListResponseListener() {
+    private ValueEventListener getUsernameListResponseListener() {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                mUserMailList.clear();
+//                Mail mail;
+//                for (DataSnapshot snapshotChild : dataSnapshot.getChildren()) {
+//                    mail = snapshotChild.getValue(Mail.class);
+//                    mUserMailList.add(mail);
+//                }
 
             }
 
@@ -159,11 +170,19 @@ public class FirebaseManager {
         };
     }
 
-    private ValueEventListener getUserContactListener() {
+    private ValueEventListener getUserContactListResponseListener() {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                mUserContactList.clear();
+                String contactUsername;
+                for (DataSnapshot snapshotChild : dataSnapshot.getChildren()) {
+                    // check boolean for still true later when remove contact is enabled
+                    contactUsername = snapshotChild.getKey();
+                    mUserContactList.add(contactUsername);
+                }
+                // add contact spinner adapter population here
+                mPresenter.updateContactList();
             }
 
             @Override
@@ -194,18 +213,16 @@ public class FirebaseManager {
     // later will make contact separate class, if adding nickname possibility
 
     public void addContactForUser(String username, String contactName) {
-        // consider whether listener is necessary
-        getUserReference(username).child("contact").child(contactName);
-
-        // check whether actually implementing the user list listener resolves this first
-        // (WON'T WORK)
-        // .addListenerForSingleValueEvent(getUserContactListener())
+        getUserReference(username).child("contact").child(contactName).setValue(true);
+        sendContactListRequest(username);
+                // add on success listener instead
+                // .addListenerForSingleValueEvent(getUserContactsListener());
     }
 
     // will add removeContact also that just sets value to false
 
-    public List<User> getContactListForUser(String username) {
-        return new ArrayList<>();
+    public List<String> getContactListForUser(String username) {
+        return mUserContactList;
     }
 
     public void getMailListForUser(String username) {

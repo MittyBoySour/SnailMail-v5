@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/composition_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/read_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:hint="Title"/>
+
+    <TextView
+        android:id="@+id/read_message"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:scrollbars="vertical"
+        android:layout_below="@+id/read_title"
+        android:layout_above="@+id/read_sender"
+        android:hint="Message"
+        />
+
+    <!-- add spinner search for list of contacts -->
+    <TextView
+        android:id="@+id/read_sender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        android:layout_above="@+id/delivery_location"
+        android:hint="Sender"/>
+
+    <TextView
+        android:id="@+id/delivery_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:hint="Reception Location"/>
+
+
+</RelativeLayout>

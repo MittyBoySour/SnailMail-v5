@@ -27,7 +27,6 @@ public class MailListActivity extends AppCompatActivity {
     private static final String TAG = "MailListActivity";
 
     private MailListPresenter mMailListPresenter;
-
     private User mCurrentUser;
 
     @Override

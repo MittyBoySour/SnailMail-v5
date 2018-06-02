@@ -46,4 +46,5 @@ public class MailCompositionActivity extends AppCompatActivity {
         mMailCompositionPresenter = new MailCompositionPresenter(mailCompositionFragment);
         mMailCompositionPresenter.setCurrentUser(mCurrentUser);
     }
+
 }

@@ -1,5 +1,6 @@
 package com.mad.snailmail_v5.MailList;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
 import com.mad.snailmail_v5.Model.Mail;
@@ -15,24 +16,20 @@ class MailListPresenter implements MailListContract.Presenter {
     MailListPresenter(MailListContract.View mailListView) {
         // check for null
         this.mMailListView = mailListView;
-
         mMailListView.setPresenter(this);
-    }
-
-    @Override
-    public void start() {
-
+        mFirebaseManager = FirebaseManager.getInstance();
+        mFirebaseManager.setPresenter(this);
     }
 
     @Override
     public void setCurrentUser(User user) {
         mCurrentUser = user;
-        mFirebaseManager = FirebaseManager.getInstance(mCurrentUser.getUsername(), this);
+        mFirebaseManager.setUser(mCurrentUser);
     }
 
     @Override
-    public void updateMailList() {
-        mMailListView.displayMailListFromAdapter();
+    public void updateMailAdapter(MailAdapter mailAdapter) {
+        mMailListView.attachMailAdapter(mailAdapter);
     }
 
     @Override
@@ -41,17 +38,20 @@ class MailListPresenter implements MailListContract.Presenter {
     }
 
     @Override
-    public void addContactForUser(String contactUsername) {
-        mFirebaseManager.addContactForUser(mCurrentUser.getUsername(), contactUsername);
+    public void mailListRefreshRequested() {
+        mFirebaseManager.updateMailList();
+    }
+
+    //////////////// NOT NEEDED ///////////////////
+
+    @Override
+    public void start() {
+
     }
 
     @Override
-    public RecyclerView.Adapter getUserMailAdapter() {
-        return mFirebaseManager.getUserMailAdapter();
+    public void updateContactList() {
+
     }
 
-    @Override
-    public void sendMailToContact(Mail mail) {
-        mFirebaseManager.sendMailToContact(mail);
-    }
 }
