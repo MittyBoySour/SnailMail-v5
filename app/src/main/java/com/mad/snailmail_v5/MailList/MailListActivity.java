@@ -7,11 +7,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import com.mad.snailmail_v5.MailComposition.MailCompositionActivity;
 import com.mad.snailmail_v5.R;
 
 import com.mad.snailmail_v5.Model.User;
+import com.mad.snailmail_v5.Roaming.RoamingActivity;
 import com.mad.snailmail_v5.Utilities.ActivityUtilities;
 
 import static com.mad.snailmail_v5.Utilities.ActivityConstants.ActivityKeys.CURRENT_USER_KEY;
@@ -29,6 +31,7 @@ public class MailListActivity extends AppCompatActivity {
     private MailListPresenter mMailListPresenter;
     private User mCurrentUser;
     private SharedPreferences mSharedPreferences;
+    private Button mRoamingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,10 @@ public class MailListActivity extends AppCompatActivity {
 
         mComposeMailFAB = (FloatingActionButton) findViewById(R.id.compose_mail_fab);
         mComposeMailFAB.setOnClickListener(getFABClickListener());
+
+        mRoamingButton = (Button) findViewById(R.id.start_roaming);
+        mRoamingButton.setOnClickListener(getRoamingButtonClickListener());
+
 
         // may need to restore current state through saved inst bundle
 
@@ -80,4 +87,14 @@ public class MailListActivity extends AppCompatActivity {
             }
         };
     }
+
+    private View.OnClickListener getRoamingButtonClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MailListActivity.this, RoamingActivity.class));
+            }
+        };
+    }
+
 }

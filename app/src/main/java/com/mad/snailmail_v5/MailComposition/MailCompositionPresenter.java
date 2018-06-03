@@ -18,6 +18,7 @@ import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.mad.snailmail_v5.DeliveryLocator.DeliveryLocatorActivity;
+import com.mad.snailmail_v5.MailList.MailListActivity;
 import com.mad.snailmail_v5.Model.BareGeofence;
 import com.mad.snailmail_v5.Model.Mail;
 import com.mad.snailmail_v5.Model.User;
@@ -80,14 +81,8 @@ class MailCompositionPresenter implements MailCompositionContract.Presenter {
         }
 
         // creating mail
-        double[] coordinates = new double[4];
         LatLng sourceLocation = getUserCurrentLocation();
         LatLng deliveryLocation = mDeliveryLocation;
-        coordinates[0] = sourceLocation.latitude;
-        coordinates[1] = sourceLocation.longitude;
-        coordinates[2] = deliveryLocation.latitude;
-        coordinates[3] = deliveryLocation.longitude;
-
 
         Mail mail = new Mail.Builder()
                 .setSender(mCurrentUser.getUsername())
@@ -105,7 +100,12 @@ class MailCompositionPresenter implements MailCompositionContract.Presenter {
 
         mFirebaseManager.sendMailToContact(mail);
 
-        // async response should return geofence key into a new method
+        returnToMailList();
+
+    }
+
+    private void returnToMailList() {
+        mActivityContext.startActivity(new Intent(mActivityContext.getApplication(), MailListActivity.class));
     }
 
     // should be in delivery manager
@@ -134,12 +134,14 @@ class MailCompositionPresenter implements MailCompositionContract.Presenter {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // start mail list activity
+                        returnToMailList();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // dismiss dialogue
+
                     }
                 });
 

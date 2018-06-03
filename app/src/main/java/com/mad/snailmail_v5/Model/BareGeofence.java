@@ -13,6 +13,10 @@ public class BareGeofence {
     private double mLatitude;
     private double mLongitude;
 
+    public BareGeofence() {
+
+    }
+
     public BareGeofence(boolean isActive, double latitude, double longitude) {
         this.mIsActive = isActive;
         this.mLatitude = latitude;

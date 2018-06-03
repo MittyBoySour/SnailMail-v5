@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +17,9 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,6 +39,9 @@ import static com.mad.snailmail_v5.Utilities.ActivityConstants.ActivityKeys.PEND
 
 public class RoamingPresenter implements RoamingContract.Presenter {
 
+    private final String MOCK_PROVIDER = "mock_provider";
+
+    private ArrayList<Circle> mCircleList;
     private FusedLocationProviderClient mFusedLocationClient;
     private GeofencingClient mGeofencingClient;
     private ArrayList<Geofence> mGeofenceList;
@@ -46,12 +54,16 @@ public class RoamingPresenter implements RoamingContract.Presenter {
     private PendingIntent mGeofencePendingIntent;
     private GeofencingRequest mGeofencingRequest;
     private RoamingActivity.IntentResultHandler mResultHandler;
+    private ArrayList<CircleOptions> mCircleOptionsList;
 
     public RoamingPresenter(RoamingContract.View view, Context context) {
         mView = view;
         mActivityContext = (Activity) context;
+        mFirebaseManager = FirebaseManager.getInstance();
         mFirebaseManager.setPresenter(this);
         mDeliveryManager = DeliveryManager.getInstance();
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mActivityContext);
+        mGeofencingClient = LocationServices.getGeofencingClient(mActivityContext);
     }
 
     @Override
@@ -64,6 +76,7 @@ public class RoamingPresenter implements RoamingContract.Presenter {
     public void bareGeofenceResponse(ArrayList<BareGeofence> bareGeofenceList) {
         mGeofenceList = convertToGeofenceList(bareGeofenceList);
         mGeofencingRequest = getGeofencingRequest();
+        mCircleOptionsList = getCircleOptionsList(bareGeofenceList);
 
         if (ContextCompat.checkSelfPermission(mActivityContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             mView.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION });
@@ -83,7 +96,23 @@ public class RoamingPresenter implements RoamingContract.Presenter {
                     }
                 });
 
+        mView.setGeofenceCirclesOnMap(mCircleOptionsList);
 
+    }
+
+    private ArrayList<CircleOptions> getCircleOptionsList(ArrayList<BareGeofence> bareGeofenceList) {
+        ArrayList<CircleOptions> circleOptionsList = new ArrayList<>();
+        CircleOptions circleOptions;
+
+        for (BareGeofence bareGeofence : bareGeofenceList) {
+            circleOptions = new CircleOptions()
+                    .center(new LatLng(bareGeofence.getLatitude(), bareGeofence.getLongitude()))
+                    .radius(GEOFENCE_RADIUS_IN_METRES)
+                    .strokeColor(Color.RED)
+                    .fillColor(Color.BLUE);
+            circleOptionsList.add(circleOptions);
+        }
+        return circleOptionsList;
     }
 
     @Override
@@ -184,7 +213,14 @@ public class RoamingPresenter implements RoamingContract.Presenter {
         mView.displayToast(Toast.makeText(
                 mActivityContext, R.string.simulation_mode, Toast.LENGTH_LONG
         ));
-
+        mView.setTextViewCoordinates(latLng.latitude, latLng.longitude);
+        if (ContextCompat.checkSelfPermission(mActivityContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            mView.requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION });
+        }
+        Location mockLocation = new Location(MOCK_PROVIDER);
+        mockLocation.setLatitude(latLng.latitude);
+        mockLocation.setLongitude(latLng.longitude);
+        mFusedLocationClient.setMockLocation(mockLocation);
     }
 
 }

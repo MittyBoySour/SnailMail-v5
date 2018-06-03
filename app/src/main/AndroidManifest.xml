@@ -22,6 +22,7 @@
         <activity android:name=".MailRead.MailReadActivity" />
         <activity android:name=".DeliveryLocator.DeliveryLocatorActivity" />
         <activity android:name=".Utilities.TestActivity" />
+        <activity android:name=".Roaming.RoamingActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
