@@ -1,12 +1,12 @@
 package com.mad.snailmail_v5.MailList;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import com.mad.snailmail_v5.MailComposition.MailCompositionActivity;
 import com.mad.snailmail_v5.R;
@@ -14,7 +14,7 @@ import com.mad.snailmail_v5.R;
 import com.mad.snailmail_v5.Model.User;
 import com.mad.snailmail_v5.Utilities.ActivityUtilities;
 
-import static com.mad.snailmail_v5.Constants.ActivityConstants.ActivityKeys.CURRENT_USER_KEY;
+import static com.mad.snailmail_v5.Utilities.ActivityConstants.ActivityKeys.CURRENT_USER_KEY;
 
 // TODO: Make FirebaseManager abstract with separate implementations for activities
 // TODO: Add HashMap (and maybe builders) for each com.mad.snailmail_v5.Model (mail, geo) [may not be necessary as cached]
@@ -28,6 +28,7 @@ public class MailListActivity extends AppCompatActivity {
 
     private MailListPresenter mMailListPresenter;
     private User mCurrentUser;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +36,15 @@ public class MailListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mail_list);
 
         // ensure user is set
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (mCurrentUser == null) {
             // startActivity(new Intent(this, SignInActivity.class));
             // remove this
             mCurrentUser = new User();
             mCurrentUser.setUsername("TestUser0");
+
+            mSharedPreferences.edit().putString(CURRENT_USER_KEY, mCurrentUser.getUsername()).apply();
+
         }
 
         mComposeMailFAB = (FloatingActionButton) findViewById(R.id.compose_mail_fab);
@@ -60,7 +65,7 @@ public class MailListActivity extends AppCompatActivity {
                     R.id.mail_list_fragment_frame);
         }
 
-        mMailListPresenter = new MailListPresenter(mailListFragment);
+        mMailListPresenter = new MailListPresenter(mailListFragment, this);
         mMailListPresenter.setCurrentUser(mCurrentUser);
     }
 

@@ -3,12 +3,15 @@ package com.mad.snailmail_v5.MailList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.mad.snailmail_v5.Model.Mail;
 import com.mad.snailmail_v5.R;
 
 public class MailListFragment extends Fragment implements MailListContract.View {
@@ -38,14 +41,33 @@ public class MailListFragment extends Fragment implements MailListContract.View 
         mLayoutManager = new LinearLayoutManager(getActivity());// check for null
         mMailRecyclerView.setLayoutManager(mLayoutManager);
 
-        mPresenter.mailListRefreshRequested();
-
         return root;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mPresenter.mailListRefreshRequested();
     }
 
     @Override
     public void setPresenter(MailListContract.Presenter presenter) {
         mPresenter = presenter; // add checkNotNull library
+    }
+
+    @Override
+    public void displayDialogue(AlertDialog dialogue) {
+
+    }
+
+    @Override
+    public void requestPermissions(String[] permissions) {
+
+    }
+
+    @Override
+    public void displayToast(Toast toast) {
+
     }
 
     public static MailListFragment newInstance() {
@@ -56,4 +78,5 @@ public class MailListFragment extends Fragment implements MailListContract.View 
     public void attachMailAdapter(MailAdapter mailAdapter) {
         mMailRecyclerView.setAdapter(mailAdapter);
     }
+
 }

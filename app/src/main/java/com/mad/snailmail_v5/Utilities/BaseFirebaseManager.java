@@ -1,35 +1,16 @@
 package com.mad.snailmail_v5.Utilities;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.mad.snailmail_v5.BaseInterfaces.BasePresenter;
 import com.mad.snailmail_v5.Model.User;
 
-public class BaseFirebaseManager<P extends BasePresenter> {
+public interface BaseFirebaseManager<P extends BasePresenter> {
 
-    private static DatabaseReference mRootDatabaseReference;
+    BaseFirebaseManager getInstance();
 
-    private static final String USER_FILTER = "user";
-    private static final String USER_MAIL_FILTER = "mail";
+    void setPresenter(P presenter);
 
-    private P mPresenter;
-    private User mCurrentUser;
+    void setUser(User user);
 
-    public BaseFirebaseManager() {
-        mRootDatabaseReference = FirebaseDatabase.getInstance()
-                .getReference();
-    }
-
-    private void setPresenter(P presenter) {
-        mPresenter = presenter;
-    }
-
-    private void setUser(User user) {
-        mCurrentUser = user;
-    }
-
-    private DatabaseReference getUserListReference() {
-        return mRootDatabaseReference.child(USER_FILTER);
-    }
+    User getCurrentUser();
 
 }

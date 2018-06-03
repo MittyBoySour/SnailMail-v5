@@ -1,23 +1,23 @@
 package com.mad.snailmail_v5.MailList;
 
-import android.support.v7.widget.RecyclerView;
-
 import com.mad.snailmail_v5.BaseInterfaces.BasePresenter;
 import com.mad.snailmail_v5.BaseInterfaces.BaseView;
 import com.mad.snailmail_v5.Model.Mail;
 import com.mad.snailmail_v5.Model.User;
 
+import java.util.ArrayList;
+
 public interface MailListContract {
 
     interface Presenter extends BasePresenter {
 
-        void setCurrentUser(User user);
-
         void mailListRefreshRequested();
 
-        void updateMailAdapter(MailAdapter mailAdapter);
+        void userMailListResponse(ArrayList<Mail> mailList);
 
         void addNewUser(String username);
+
+        void mailTitleClicked(Mail mail);
 
     }
 

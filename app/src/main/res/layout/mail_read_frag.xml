@@ -31,11 +31,11 @@
         android:layout_weight="1"
         android:textSize="20sp"
         android:textStyle="italic"
-        android:layout_above="@+id/delivery_location"
+        android:layout_above="@+id/reception_location"
         android:hint="Sender"/>
 
     <TextView
-        android:id="@+id/delivery_location"
+        android:id="@+id/reception_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"

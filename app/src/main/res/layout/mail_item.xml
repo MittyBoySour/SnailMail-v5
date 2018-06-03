@@ -8,12 +8,14 @@
         android:id="@+id/mail_sender"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:text="sender" />
 
     <TextView
         android:id="@+id/mail_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"/>
+        android:layout_weight="2"
+        android:text="title"/>
 
 </LinearLayout>

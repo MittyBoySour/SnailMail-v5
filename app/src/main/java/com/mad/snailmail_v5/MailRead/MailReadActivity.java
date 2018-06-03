@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.mad.snailmail_v5.Model.Mail;
 import com.mad.snailmail_v5.Model.User;
 import com.mad.snailmail_v5.R;
 import com.mad.snailmail_v5.Utilities.ActivityUtilities;
@@ -13,7 +14,7 @@ public class MailReadActivity extends AppCompatActivity {
 
     FloatingActionButton mReplyToMailFAB;
 
-    private static final String TAG = "MailListActivity";
+    private static final String TAG = "MailReadActivity";
 
     private MailReadPresenter mMailReadPresenter;
     private User mCurrentUser;
@@ -21,8 +22,9 @@ public class MailReadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mail_list);
+        setContentView(R.layout.activity_mail_read);
 
+        mCurrentUser = new User();
         mCurrentUser.setUsername("TestUser0");
 
         mReplyToMailFAB = (FloatingActionButton) findViewById(R.id.compose_mail_fab);
@@ -40,12 +42,15 @@ public class MailReadActivity extends AppCompatActivity {
             // Log.d(TAG, "onCreate: " + mailListFragment.toString());
             ActivityUtilities.addFragmentToActivity(
                     getSupportFragmentManager(), mailReadFragment,
-                    R.id.mail_list_fragment_frame);
+                    R.id.mail_read_fragment_frame);
         }
 
         mMailReadPresenter = new MailReadPresenter(mailReadFragment);
         mMailReadPresenter.setCurrentUser(mCurrentUser);
+        mMailReadPresenter.passIntent(getIntent());
     }
+
+
 
     private View.OnClickListener getFABClickListener() {
         return new View.OnClickListener() {

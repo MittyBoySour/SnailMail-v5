@@ -27,7 +27,7 @@
             android:layout_weight="1"
             android:hint="Recipient"/>
 
-        <EditText
+        <TextView
             android:id="@+id/delivery_address"
             android:layout_width="0dp"
             android:layout_height="match_parent"

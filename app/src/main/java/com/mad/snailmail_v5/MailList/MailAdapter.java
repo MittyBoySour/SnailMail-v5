@@ -15,6 +15,8 @@ import com.mad.snailmail_v5.Model.Mail;
 
 public class MailAdapter extends RecyclerView.Adapter<MailAdapter.MailViewHolder> {
 
+    private static MailListPresenter mMailListPresenter;
+
     public class MailViewHolder extends RecyclerView.ViewHolder {
 
         public TextView senderTV;
@@ -30,8 +32,9 @@ public class MailAdapter extends RecyclerView.Adapter<MailAdapter.MailViewHolder
 
     private ArrayList<Mail> mMailList;
 
-    public MailAdapter(ArrayList<Mail> mailList) {
+    public MailAdapter(ArrayList<Mail> mailList, MailListPresenter mailListPresenter) {
         mMailList = mailList;
+        mMailListPresenter = mailListPresenter;
     }
 
     @NonNull
@@ -43,12 +46,35 @@ public class MailAdapter extends RecyclerView.Adapter<MailAdapter.MailViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MailViewHolder holder, int position) {
-        holder.senderTV.setText(mMailList.get(position).getSender());
-        holder.titleTv.setText(mMailList.get(position).getTitle());
+        Mail mail = mMailList.get(position);
+
+        if (!mail.isDelivered()) {
+            holder.senderTV.setText(R.string.mystery_sender);
+            holder.titleTv.setText(R.string.mail_not_delivered);
+        } else if (mail.isDelivered() && !mail.isCollected()) {
+            holder.senderTV.setText(R.string.mystery_sender);
+            holder.titleTv.setText(R.string.mail_delivered);
+        } else {
+            holder.senderTV.setText(mail.getSender());
+            holder.titleTv.setText(mail.getTitle());
+        }
+
+        holder.titleTv.setOnClickListener(getTitleClickListener(position));
+
     }
 
     @Override
     public int getItemCount() {
         return mMailList.size();
     }
+
+    private View.OnClickListener getTitleClickListener(final int position) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMailListPresenter.mailTitleClicked(mMailList.get(position));
+            }
+        };
+    }
+
 }

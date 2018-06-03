@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">SnailMail-v5</string>
     <string name="title_activity_test">TestActivity</string>
+    <string name="name_marker_dialogue">Please name this Location</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_marker_dialogue">Select this Delivery Location?</string>
+    <string name="permission_reasoning_toast">These Permissions are needed to send and receive mail</string>
+    <string name="discard_mail_dialogue">Are you sure you wish to discard this delectable piece of writing?</string>
+    <string name="location_selector_toast">Hold down on Delivery Address field to select location</string>
+    <string name="fields_not_filled_toast">All fields must be filled before submitting</string>
+    <string name="mystery_sender">Mystery Sender</string>
+    <string name="mail_delivered">Your mail is waiting for you to pick it up!</string>
+    <string name="mail_not_delivered">Your mail is in transit, be patient!</string>
+    <string name="mail_unavailable">Mail is not yet available to read!</string>
+    <string name="delivery_location_needed">Delivery Location is needed to send mail!</string>
+    <string name="simulation_mode">Simulation mode. Click anywhere on the map to set your current location.</string>
 </resources>
