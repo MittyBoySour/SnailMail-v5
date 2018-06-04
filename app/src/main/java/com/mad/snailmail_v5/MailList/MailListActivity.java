@@ -14,13 +14,10 @@ import com.mad.snailmail_v5.R;
 
 import com.mad.snailmail_v5.Model.User;
 import com.mad.snailmail_v5.Roaming.RoamingActivity;
+import com.mad.snailmail_v5.SignIn.SignInActivity;
 import com.mad.snailmail_v5.Utilities.ActivityUtilities;
 
 import static com.mad.snailmail_v5.Utilities.ActivityConstants.ActivityKeys.CURRENT_USER_KEY;
-
-// TODO: Make FirebaseManager abstract with separate implementations for activities
-// TODO: Add HashMap (and maybe builders) for each com.mad.snailmail_v5.Model (mail, geo) [may not be necessary as cached]
-// TODO: Add image storage
 
 public class MailListActivity extends AppCompatActivity {
 
@@ -39,25 +36,13 @@ public class MailListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mail_list);
 
         // ensure user is set
+        mCurrentUser = new User();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (mCurrentUser == null) {
-            // startActivity(new Intent(this, SignInActivity.class));
-            // remove this
-            mCurrentUser = new User();
-            mCurrentUser.setUsername("TestUser0");
+        mCurrentUser.setUsername(mSharedPreferences.getString(CURRENT_USER_KEY, ""));
 
-            mSharedPreferences.edit().putString(CURRENT_USER_KEY, mCurrentUser.getUsername()).apply();
-
+        if (mCurrentUser.getUsername().contentEquals("")) {
+            startActivity(new Intent(this, SignInActivity.class));
         }
-
-        mComposeMailFAB = (FloatingActionButton) findViewById(R.id.compose_mail_fab);
-        mComposeMailFAB.setOnClickListener(getFABClickListener());
-
-        mRoamingButton = (Button) findViewById(R.id.start_roaming);
-        mRoamingButton.setOnClickListener(getRoamingButtonClickListener());
-
-
-        // may need to restore current state through saved inst bundle
 
         MailListFragment mailListFragment =
                 (MailListFragment) getSupportFragmentManager()
@@ -72,8 +57,15 @@ public class MailListActivity extends AppCompatActivity {
                     R.id.mail_list_fragment_frame);
         }
 
-        mMailListPresenter = new MailListPresenter(mailListFragment, this);
+        mMailListPresenter = new MailListPresenter(mailListFragment, MailListActivity.this);
         mMailListPresenter.setCurrentUser(mCurrentUser);
+
+        mComposeMailFAB = (FloatingActionButton) findViewById(R.id.compose_mail_fab);
+        mComposeMailFAB.setOnClickListener(getFABClickListener());
+
+        mRoamingButton = (Button) findViewById(R.id.start_roaming);
+        mRoamingButton.setOnClickListener(getRoamingButtonClickListener());
+
     }
 
     private View.OnClickListener getFABClickListener() {
@@ -88,6 +80,9 @@ public class MailListActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     * Provides an onclick listener to start new activity
+     */
     private View.OnClickListener getRoamingButtonClickListener() {
         return new View.OnClickListener() {
             @Override

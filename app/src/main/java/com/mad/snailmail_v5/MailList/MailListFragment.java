@@ -57,7 +57,7 @@ public class MailListFragment extends Fragment implements MailListContract.View 
 
     @Override
     public void displayDialogue(AlertDialog dialogue) {
-
+        dialogue.create();
     }
 
     @Override
@@ -67,6 +67,11 @@ public class MailListFragment extends Fragment implements MailListContract.View 
 
     @Override
     public void displayToast(Toast toast) {
+        toast.show();
+    }
+
+    @Override
+    public void setDataLoading(boolean dataLoading) {
 
     }
 

@@ -47,6 +47,7 @@ public class MailCompositionFragment extends Fragment implements MailComposition
     private FusedLocationProviderClient mFusedLocationClient;
     private GeofencingClient mGeofencingClient;
     private Activity mContext;
+    private String mRecipient;
 
     @Override
     public void onAttach(Context context) {
@@ -81,6 +82,11 @@ public class MailCompositionFragment extends Fragment implements MailComposition
     }
 
     @Override
+    public void setDataLoading(boolean dataLoading) {
+
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
@@ -109,7 +115,9 @@ public class MailCompositionFragment extends Fragment implements MailComposition
 
         mTitleET = (EditText) root.findViewById(R.id.composition_title);
         mRecipientET = (EditText) root.findViewById(R.id.composition_recipient);
-
+        if (mRecipient != null) {
+            mRecipientET.setText(mRecipient);
+        }
         mDeliveryLocationTV = (TextView) root.findViewById(R.id.delivery_address);
         mDeliveryLocationTV.setOnLongClickListener(getDeliveryLocationFieldLongClickedListener());
         mDeliveryLocationTV.setOnClickListener(getDeliveryLocationFieldClickedListener());
@@ -190,6 +198,11 @@ public class MailCompositionFragment extends Fragment implements MailComposition
     @Override
     public void updateDeliveryLocation(String markerTitle) {
         mDeliveryLocationTV.setText(markerTitle);
+    }
+
+    @Override
+    public void storeRecipient(String stringExtra) {
+        mRecipient = stringExtra;
     }
 
 }

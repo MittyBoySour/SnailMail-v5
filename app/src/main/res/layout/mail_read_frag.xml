@@ -4,43 +4,54 @@
     android:id="@+id/composition_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/gradient_background">
 
     <TextView
         android:id="@+id/read_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:hint="Title"/>
+        android:layout_margin="@dimen/form_margin"
+        android:fontFamily="@font/marck_script"
+        android:hint="@string/title"
+        android:textAlignment="center"
+        android:textSize="@dimen/item_text_size" />
 
     <TextView
         android:id="@+id/read_message"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:scrollbars="vertical"
-        android:layout_below="@+id/read_title"
+        android:layout_height="match_parent"
         android:layout_above="@+id/read_sender"
-        android:hint="Message"
-        />
+        android:layout_below="@+id/read_title"
+        android:layout_margin="@dimen/form_margin"
+        android:fontFamily="@font/marck_script"
+        android:hint="@string/message"
+        android:scrollbars="vertical"
+        android:textSize="24sp" />
 
     <!-- add spinner search for list of contacts -->
     <TextView
         android:id="@+id/read_sender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="20sp"
-        android:textStyle="italic"
         android:layout_above="@+id/reception_location"
-        android:hint="Sender"/>
+        android:layout_margin="@dimen/form_margin"
+        android:fontFamily="@font/marck_script"
+        android:hint="@string/sender"
+        android:textAlignment="textEnd"
+        android:textSize="30sp"
+        android:textStyle="italic" />
 
     <TextView
         android:id="@+id/reception_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
         android:layout_alignParentBottom="true"
-        android:hint="Reception Location"/>
+        android:layout_margin="@dimen/form_margin"
+        android:fontFamily="@font/archivo_black"
+        android:hint="@string/delivery_location"
+        android:textAlignment="viewEnd"
+        android:textSize="24sp" />
 
 
 </RelativeLayout>

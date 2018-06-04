@@ -19,22 +19,12 @@ import com.mad.snailmail_v5.Model.BareGeofence;
 import com.mad.snailmail_v5.Model.Mail;
 import com.mad.snailmail_v5.Model.User;
 
-// maybe user Singleton approach
-// create an interface
-
-// may need to split into multiple implementations for various database refs
-// this class should only consider the context/activity from which it is called
-// can track from a switch statement where activity as int is passed in
-// then design queries/parser/adapter based on that
-
-// using retrofit, gson, and firebase
-// http://sushildlh-retro-firebase.blogspot.com/
-
 public class FirebaseManager<P extends BasePresenter> {
 
-    // maybe move to constants file
+
     private static final String TAG = "FirebaseManager";
-    // change to plurals
+
+    // JSON database path tree constants
     private static final String USER_FILTER = "user";
     private static final String USER_MAIL_FILTER = "mail";
     private static final String USER_CONTACT_FILTER = "contact";
@@ -45,16 +35,12 @@ public class FirebaseManager<P extends BasePresenter> {
     private static FirebaseManager sInstance;
     private static DeliveryManager mDeliveryManager;
 
-    private static ArrayList<String> mUsernameList;
-    private static ArrayList<String> mUserContactList;
-
     private P mPresenter;
     private User mCurrentUser;
 
     private FirebaseManager() {
         mRootDatabaseReference = FirebaseDatabase.getInstance()
                 .getReference();
-        mUsernameList = new ArrayList<>();
         sendUsernameListRequest();
         mDeliveryManager = DeliveryManager.getInstance();
     }
@@ -82,6 +68,16 @@ public class FirebaseManager<P extends BasePresenter> {
 
     ////////////// CURRENT DB LIST //////////////
 
+
+    /**
+     * below are a set of requests to the Database that trigger asynchonous listeners to update the
+     * the presenter.
+     *
+     * All are named in such a way that the path through the JSON tree should be clear
+     * (i.e the path trees track left to right)
+     *
+     * The parameters provided are keys to track further into the tree for the appropriate item
+     */
     private void sendUsernameListRequest() {
         getUserListReference().addListenerForSingleValueEvent(getUsernameListResponseListener());
     }
@@ -96,12 +92,17 @@ public class FirebaseManager<P extends BasePresenter> {
                 getUserContactListResponseListener());
     }
 
-    // maybe make some of these generic with enums from consts/ints to pass in for diff response
-
     ////////////// DB REFERENCES ////////////////
 
-    // probably convert to path builder
 
+    /**
+     * below are a set of path builders to provide concrete references to the Database.
+     *
+     * All are named in such a way that the path through the JSON tree should be clear
+     * (i.e the path trees track left to right)
+     *
+     * The parameters provided are keys to track further into the tree for the appropriate item
+     */
     private DatabaseReference getUserMailReference(String username, String mailKey) {
         return mRootDatabaseReference.child(USER_FILTER)
                 .child(username).child(USER_MAIL_FILTER).child(mailKey);
@@ -132,15 +133,22 @@ public class FirebaseManager<P extends BasePresenter> {
 
     ////////////// FIREBASE RESPONSE LISTENERS ////////////////
 
+    /**
+     * Below are the methods used to asynchronously listen and respond to database calls.
+     * They are each crafted for a specific database reference or action to handle
+     *
+     * If the methods take parameters, it is so that they cn perform operations on the database
+     *
+     */
+
+    /**
+     * Iterates through the current mail list for the user and calls the current presenter
+     * when completed to the mail list as required (through the adapter)
+     */
     private ValueEventListener getUserMailListResponseListener() {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // clear the current list and add new items to it
-                // call presenter with new data
-                // create new MailAdapter with new list data
-                // call presenter to update
-                // presenter will call view to update passing it new adapter
                 ArrayList<Mail> userMailList = new ArrayList<>();
                 ArrayList<String> userMailKeyList = new ArrayList<>();
                 Mail mail;
@@ -162,10 +170,17 @@ public class FirebaseManager<P extends BasePresenter> {
                 // clear the current list and add new items to it
                 // call presenter with new data
                 // list of contacts to verify against for various methods
+                Log.d(TAG, "onCancelled: " + databaseError.getCode());
             }
         };
     }
 
+    /**
+     * iterates through the list of user mail and updates any mail items from the passed
+     * mail item list to notify it that those items have changed
+     *
+     * @param userMailKeyList
+     */
     private ValueEventListener getUserMailUpdateResponseListener(final ArrayList<String> userMailKeyList) {
         return new ValueEventListener() {
             @Override
@@ -180,7 +195,6 @@ public class FirebaseManager<P extends BasePresenter> {
                     // set active status
                     for (String collectedMailKey : userMailKeyList) {
                         if (mailKey.contentEquals(collectedMailKey)) {
-                            mail.setCollected(false);
                             mailListUpdates.put(mailKey, mail);
                         }
                     }
@@ -209,6 +223,7 @@ public class FirebaseManager<P extends BasePresenter> {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: " + databaseError.getCode());
 
             }
         };
@@ -231,6 +246,7 @@ public class FirebaseManager<P extends BasePresenter> {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: " + databaseError.getCode());
 
             }
         };
@@ -259,11 +275,18 @@ public class FirebaseManager<P extends BasePresenter> {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: " + databaseError.getCode());
 
             }
         };
     }
 
+    /**
+     * iterates through the list of geofences and updates any triggered from the passed
+     * geofence item list to notify it that those items have changed
+     *
+     * @param triggeredGeofences
+     */
     private ValueEventListener getUserGeofenceListUpdateResponseListener(final ArrayList<String> triggeredGeofences) {
         return new ValueEventListener() {
             @Override
@@ -289,11 +312,19 @@ public class FirebaseManager<P extends BasePresenter> {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: " + databaseError.getCode());
 
             }
         };
     }
 
+
+    /**
+     * iterates through the list of geofences and updates any items from the passed
+     * mail item list to notify it that those items have changed
+     *
+     * @param triggeredGeofences
+     */
     private OnCompleteListener<Void> getGeofenceUpdateCompleteListener(final ArrayList<String> triggeredGeofences) {
         return new OnCompleteListener<Void>() {
             @Override
@@ -318,7 +349,17 @@ public class FirebaseManager<P extends BasePresenter> {
 
     public void addNewUser(String username) {
         // validate name
-        getUserListReference().child(username);
+        getUserListReference().child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mPresenter.userSuccessfullyAdded();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     // may need to return string
@@ -338,17 +379,6 @@ public class FirebaseManager<P extends BasePresenter> {
         getUserReference(recipient).child(USER_BARE_GEOFENCE_FILTER).child(geofenceKey)
                 .updateChildren(bareGeofence);
 
-//        bareGeorefence.put();
-//        double latitude = mail.getCoordinates()[2];
-//        double longitude = mail.getCoordinates()[3];
-//
-//        getUserReference(recipient).child(USER_BARE_GEOFENCE_FILTER).child(geofenceKey)
-//                .child(BARE_GEOFENCE_COLLECTED_STATUS_STORAGE_KEY).setValue(latitude);
-//        getUserReference(recipient).child(USER_BARE_GEOFENCE_FILTER).child(geofenceKey)
-//                .child(BARE_GEOFENCE_LATITUDE_STORAGE_KEY).setValue(latitude);
-//        getUserReference(recipient).child(USER_BARE_GEOFENCE_FILTER).child(geofenceKey)
-//                .child(BARE_GEOFENCE_LONGITUDE_STORAGE_KEY).setValue(longitude);
-
         mail.setGeofenceReferenceKey(geofenceKey);
 
         getUserMailReference(recipient, mailKey).setValue(mail)
@@ -356,16 +386,12 @@ public class FirebaseManager<P extends BasePresenter> {
 
     }
 
-    // later will make contact separate class, if adding nickname possibility
-
     public void addContactForUser(String username, String contactName) {
         getUserReference(username).child(USER_CONTACT_FILTER).child(contactName).setValue(true);
         sendContactListRequest(username);
-                // add on success listener instead
-                // .addListenerForSingleValueEvent(getUserContactsListener());
     }
 
-    public boolean userExists(String username) {
+    private boolean userExists(String username) {
         return (getUserListReference().child(username).getKey() != null);
     }
 
@@ -386,6 +412,10 @@ public class FirebaseManager<P extends BasePresenter> {
     private void writeMailListBackToFirebase(ArrayList<String> userMailKeyList) {
         getUserMailListReference(mCurrentUser.getUsername())
                 .addListenerForSingleValueEvent(getUserMailUpdateResponseListener(userMailKeyList));
+    }
+
+    public void verifyUser(String username) {
+        mPresenter.userExistenceResponse(userExists(username));
     }
 
 }

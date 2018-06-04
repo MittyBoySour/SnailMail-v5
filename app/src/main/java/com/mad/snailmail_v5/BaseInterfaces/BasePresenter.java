@@ -22,4 +22,8 @@ public interface BasePresenter {
 
     void userListResponse();
 
+    void userExistenceResponse(boolean userExists);
+
+    void userSuccessfullyAdded();
+
 }

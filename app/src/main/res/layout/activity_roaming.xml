@@ -5,7 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Roaming.RoamingActivity">
+    tools:context=".Roaming.RoamingActivity"
+    android:background="@drawable/gradient_background"
+    >
 
     <LinearLayout
         android:id="@+id/lat_long_container"
@@ -20,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:hint="Latitude"
+            android:hint="@string/latitude"
             android:textSize="20sp"
             android:layout_weight="1"/>
 
@@ -29,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:hint="Longitude"
+            android:hint="@string/longitude"
             android:textSize="20sp"
             android:layout_weight="1"/>
 
@@ -56,7 +58,8 @@
         android:id="@+id/stop_roaming"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stop Roaming and Check Mail"
+        android:text="@string/stop_roaming"
+        android:background="@drawable/button_curve"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />

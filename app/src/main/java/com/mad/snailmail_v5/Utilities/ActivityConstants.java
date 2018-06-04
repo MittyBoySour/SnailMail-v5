@@ -13,14 +13,11 @@ public class ActivityConstants {
         public static final String CURRENT_USER_KEY = "current_user_key";
         public static final String MAIL_ITEM_KEY = "mail_item_key";
 
-//        public static final String BARE_GEOFENCE_LATITUDE_STORAGE_KEY = "bareGeofenceLatitude";
-//        public static final String BARE_GEOFENCE_LONGITUDE_STORAGE_KEY = "bareGeofenceLongitude";
-//        public static final String BARE_GEOFENCE_COLLECTED_STATUS_STORAGE_KEY = "bareGeofenceCollectedStatus";
-
         public static final String PENDING_GEOFENCE_TRANSITION_KEY = "pending_geofence_transition_key";
         public static final String PENDING_GEOFENCE_INTENT_KEY = "pending_geofence_intent_key";
         public static final int PENDING_GEOFENCE_INTENT_BUNDLE = 5001;
 
+        public static final String RECIPIENT_NAME = "recipient_name";
         public static final String SELECTED_LOCATION_KEY = "selected_location_key";
         public static final String LOCATION_LATITUDE_KEY = "location_latitude_key";
         public static final String LOCATION_LONGITUDE_KEY = "location_longitude_key";
@@ -28,7 +25,7 @@ public class ActivityConstants {
         public static final String MARKER_TITLE = "marker_title";
         public static final String MAIL_COORDINATES = "mail_coordinates";
         public static final float GEOFENCE_RADIUS_IN_METRES = 100; /* suggested minimum */
-        // public static final long GEOFENCE_EXPIRATION_IN_MILLISECONDS = 2628000;
+        public static final long GEOFENCE_EXPIRATION_IN_MILLISECONDS = 2628000;
 
         ///////////// PERMISSIONS /////////////////
 

@@ -6,28 +6,32 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.mad.snailmail_v5.MailRead.MailReadActivity;
 import com.mad.snailmail_v5.Model.BareGeofence;
 import com.mad.snailmail_v5.Model.Mail;
 import com.mad.snailmail_v5.Model.User;
 import com.mad.snailmail_v5.R;
+import com.mad.snailmail_v5.SignIn.SignInActivity;
 import com.mad.snailmail_v5.Utilities.FirebaseManager;
 
 import java.util.ArrayList;
 
 import static com.mad.snailmail_v5.Utilities.ActivityConstants.ActivityKeys.MAIL_ITEM_KEY;
 
+
 class MailListPresenter implements MailListContract.Presenter {
 
     private final MailListContract.View mMailListView;
-    private final Context mContext;
+    private Activity mActivityContext;
     private FirebaseManager mFirebaseManager;
     private User mCurrentUser;
+    private FirebaseAuth mFirebaseAuth;
 
-    MailListPresenter(MailListContract.View mailListView, Context context) {
+    MailListPresenter(MailListContract.View mailListView, Activity context) {
         // check for null
         mMailListView = mailListView;
-        mContext = context;
+        mActivityContext = context;
         mMailListView.setPresenter(this);
         mFirebaseManager = FirebaseManager.getInstance();
         mFirebaseManager.setPresenter(this);
@@ -46,6 +50,16 @@ class MailListPresenter implements MailListContract.Presenter {
 
     @Override
     public void userListResponse() {
+
+    }
+
+    @Override
+    public void userExistenceResponse(boolean userExists) {
+
+    }
+
+    @Override
+    public void userSuccessfullyAdded() {
 
     }
 
@@ -71,17 +85,19 @@ class MailListPresenter implements MailListContract.Presenter {
 
     @Override
     public void mailTitleClicked(Mail mail) {
-        if (mail.isDelivered() && mail.isCollected()) {
-            Intent intent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(MAIL_ITEM_KEY, mail);
-            intent.putExtras(bundle);
-            intent.setClass(((Activity) mContext), MailReadActivity.class);
-            mContext.startActivity(intent);
+        if (!(mail.isDelivered() && mail.isCollected())) {
+            mMailListView.displayToast(Toast.makeText(
+                    mActivityContext, R.string.mail_unavailable, Toast.LENGTH_LONG
+            ));
+
         }
-        mMailListView.displayToast(Toast.makeText(
-                mContext, R.string.mail_unavailable, Toast.LENGTH_SHORT
-        ));
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(MAIL_ITEM_KEY, mail);
+        intent.putExtras(bundle);
+        intent.setClass(((Activity) mActivityContext), MailReadActivity.class);
+        mActivityContext.startActivity(intent);
+
     }
 
     //////////////// NOT NEEDED ///////////////////

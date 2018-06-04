@@ -1,6 +1,5 @@
 package com.mad.snailmail_v5.Utilities;
 
-import android.app.Activity;
 import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -11,6 +10,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+
+/**
+ * Used for utilities related to time and distance management when handling geofence,
+ * user and mail interactions
+ */
 public class DeliveryManager {
 
     private static final String TAG = "DeliveryManager";
@@ -37,10 +41,16 @@ public class DeliveryManager {
         return sInstance;
     }
 
+    /**
+     * checks whether mail has arrived at its destination location and is ready for pick up
+     */
     public boolean mailDelivered(Mail mail) {
         return getCurrentTime() > mail.getArrivalTime();
     }
 
+    /**
+     * Formats a time in milliseconds to readable format
+     */
     public String toDisplayTime(long arrivalTime) {
         Date dateTime = new Date(arrivalTime);
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_TIME_FORMAT, Locale.getDefault());
@@ -55,6 +65,9 @@ public class DeliveryManager {
         return Calendar.getInstance().getTimeInMillis();
     }
 
+    /**
+     * Essentially a duration (distance over speed) calculator for two locations
+     */
     private long getTransitDuration(LatLng sourceLocation, LatLng deliveryLocation) {
         Location loc1 = new Location("");
         loc1.setLatitude(sourceLocation.latitude);
@@ -68,6 +81,9 @@ public class DeliveryManager {
         return (long)(distance / mSelectedDeliverySpeed);
     }
 
+    /**
+     * A novel means of setting speed of delivery
+     */
     public void setDeliverySpeed(Speed speed) {
         switch(speed) {
             case AVERAGE_CARRIER_PIGEON:

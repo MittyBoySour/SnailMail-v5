@@ -27,7 +27,5 @@ public interface MailListContract {
 
         // maybe add functionality to lookup users after a 4 or more chars entered
 
-
-
     }
 }

@@ -1,11 +1,13 @@
 package com.mad.snailmail_v5.DeliveryLocator;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,6 +26,8 @@ import static com.mad.snailmail_v5.Utilities.ActivityConstants.ActivityKeys.LOCA
 import static com.mad.snailmail_v5.Utilities.ActivityConstants.ActivityKeys.LOCATION_TITLE_KEY;
 
 public class DeliveryLocatorPresenter implements DeliveryLocatorContract.Presenter {
+
+    private final String TAG = "DeliveryLocatorPresenter";
 
     private final DeliveryLocatorContract.View mView;
     private final Activity mActivityContext;
@@ -50,9 +54,21 @@ public class DeliveryLocatorPresenter implements DeliveryLocatorContract.Present
 
     }
 
+    @Override
+    public void userExistenceResponse(boolean userExists) {
+
+    }
+
+    @Override
+    public void userSuccessfullyAdded() {
+
+    }
+
+    @SuppressLint("LongLogTag")
     public void mapLongClicked(LatLng latLng) {
         mView.displayDialogue(getMapLongClickedDialogue(latLng));
-        // Log.i(TAG, "onMapLongClick: mMarker latitude :" + mMarker.getPosition().latitude + ", mMarker longitude: " + mMarker.getPosition().longitude);
+        Log.i(TAG, "onMapLongClick: mMarker latitude :" + latLng.latitude +
+                ", mMarker longitude: " + latLng.longitude);
     }
 
     @Override
@@ -60,6 +76,7 @@ public class DeliveryLocatorPresenter implements DeliveryLocatorContract.Present
         // confirmation dialogue of setting as
         mView.displayDialogue(getMarkerClickedDialogue(marker));
     }
+
 
     @Override
     public void activityFinished() {

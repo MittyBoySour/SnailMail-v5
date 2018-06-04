@@ -41,14 +41,12 @@ public class RoamingPresenter implements RoamingContract.Presenter {
 
     private final String MOCK_PROVIDER = "mock_provider";
 
-    private ArrayList<Circle> mCircleList;
     private FusedLocationProviderClient mFusedLocationClient;
     private GeofencingClient mGeofencingClient;
     private ArrayList<Geofence> mGeofenceList;
     private final RoamingContract.View mView;
     private final Activity mActivityContext;
     private final DeliveryManager mDeliveryManager;
-    private String mCurrentMarkerTitle;
     private User mCurrentUser;
     private FirebaseManager mFirebaseManager;
     private PendingIntent mGeofencePendingIntent;
@@ -66,11 +64,13 @@ public class RoamingPresenter implements RoamingContract.Presenter {
         mGeofencingClient = LocationServices.getGeofencingClient(mActivityContext);
     }
 
+
     @Override
     public void setCurrentUser(User user) {
         mCurrentUser = user;
         mFirebaseManager.setUser(mCurrentUser);
     }
+
 
     @Override
     public void bareGeofenceResponse(ArrayList<BareGeofence> bareGeofenceList) {
@@ -86,13 +86,16 @@ public class RoamingPresenter implements RoamingContract.Presenter {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // Geofences added
+                        mView.displayToast(Toast.makeText(
+                                mActivityContext, R.string.geofences_succesful, Toast.LENGTH_SHORT
+                        ));
                     }
                 })
                 .addOnFailureListener(mActivityContext, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // Failed to add geofences
-
+                        e.printStackTrace();
                     }
                 });
 
@@ -117,6 +120,16 @@ public class RoamingPresenter implements RoamingContract.Presenter {
 
     @Override
     public void userListResponse() {
+
+    }
+
+    @Override
+    public void userExistenceResponse(boolean userExists) {
+
+    }
+
+    @Override
+    public void userSuccessfullyAdded() {
 
     }
 

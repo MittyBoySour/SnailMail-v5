@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
+        <item>@font/archivo_black</item>
+        <item>@font/assistant_extralight</item>
         <item>@font/jim_nightshade</item>
+        <item>@font/marck_script</item>
+        <item>@font/meie_script</item>
+        <item>@font/monsieur_la_doulaise</item>
+        <item>@font/tangerine_bold</item>
     </array>
 </resources>

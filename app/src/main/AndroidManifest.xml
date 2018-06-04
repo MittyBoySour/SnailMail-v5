@@ -23,6 +23,7 @@
         <activity android:name=".DeliveryLocator.DeliveryLocatorActivity" />
         <activity android:name=".Utilities.TestActivity" />
         <activity android:name=".Roaming.RoamingActivity" />
+        <activity android:name=".SignIn.SignInActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

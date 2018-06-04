@@ -29,9 +29,13 @@ import com.mad.snailmail_v5.Utilities.FirebaseManager;
 import java.util.ArrayList;
 
 import static com.mad.snailmail_v5.Utilities.ActivityConstants.ActivityKeys.LOCATOR_ACTIVITY_REQUEST_CODE;
+import static com.mad.snailmail_v5.Utilities.ActivityConstants.ActivityKeys.RECIPIENT_NAME;
 import static com.mad.snailmail_v5.Utilities.ActivityConstants.LocationConstants.SYDNEY_LATITUDE;
 import static com.mad.snailmail_v5.Utilities.ActivityConstants.LocationConstants.SYDNEY_LONGITUDE;
 
+/**
+ * Provides the ability to compose mail
+ */
 class MailCompositionPresenter implements MailCompositionContract.Presenter {
 
     private FusedLocationProviderClient mFusedLocationClient;
@@ -65,6 +69,16 @@ class MailCompositionPresenter implements MailCompositionContract.Presenter {
 
     @Override
     public void userListResponse() {
+
+    }
+
+    @Override
+    public void userExistenceResponse(boolean userExists) {
+
+    }
+
+    @Override
+    public void userSuccessfullyAdded() {
 
     }
 
@@ -173,6 +187,14 @@ class MailCompositionPresenter implements MailCompositionContract.Presenter {
                 Toast.makeText(mActivityContext, R.string.location_selector_toast, Toast.LENGTH_SHORT));
     }
 
+    @Override
+    public void passIntent(Intent intent) {
+        if (intent.hasExtra(RECIPIENT_NAME)) {
+            mMailCompositionView.storeRecipient(intent.getStringExtra(RECIPIENT_NAME));
+        }
+
+    }
+
     private OnSuccessListener<Location> getLocationSuccessListener() {
         return new OnSuccessListener<Location>() {
             @Override
@@ -204,6 +226,7 @@ class MailCompositionPresenter implements MailCompositionContract.Presenter {
     public void updateUserContactList(ArrayList<String> UserContactList) {
 
     }
+
 
     @Override
     public void permissionsNotSet(boolean firstRequest, String[] permissions) {

@@ -3,60 +3,50 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/composition_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
 
     <EditText
         android:id="@+id/composition_title"
+        style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:hint="Title"/>
+        android:layout_margin="@dimen/form_margin"
+        android:hint="@string/make_title"
+        android:fontFamily="@font/marck_script"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
 
     <LinearLayout
         android:id="@+id/delivery_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/composition_title"
+        android:layout_margin="@dimen/form_margin"
         android:orientation="horizontal">
 
         <!-- add spinner search for list of contacts -->
         <EditText
             android:id="@+id/composition_recipient"
+            style="@android:style/Widget.Material.Light.AutoCompleteTextView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/form_margin"
             android:layout_weight="1"
-            android:hint="Recipient"/>
+            android:fontFamily="@font/marck_script"
+            android:hint="@string/directive_text"
+            android:inputType="text" />
 
         <TextView
             android:id="@+id/delivery_address"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/form_margin"
             android:layout_weight="1"
-            android:hint="Delivery Location"/>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/item_additions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/delivery_details"
-        android:orientation="horizontal">
-
-        <!-- add spinner search for list of contacts -->
-        <Button
-            android:id="@+id/add_contact"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Add Contact"/>
-
-        <Button
-            android:id="@+id/add_delivery_address"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Add Location"/>
+            android:fontFamily="@font/assistant_extralight"
+            android:text="@string/long_click_to_locate"
+            android:textAlignment="center" />
 
     </LinearLayout>
 
@@ -64,27 +54,23 @@
         android:id="@+id/composition_middle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/item_additions"
+        android:layout_below="@+id/delivery_details"
+        android:layout_margin="@dimen/form_margin"
         android:layout_above="@+id/action_buttons" >
 
         <EditText
             android:id="@+id/composition_message"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/marck_script"
+            android:gravity="top|start"
+            android:hint="@string/write_message"
             android:inputType="textMultiLine"
             android:lines="8"
-            android:minLines="6"
-            android:gravity="top|start"
             android:maxLines="10"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
+            android:minLines="6"
             android:scrollbars="vertical"
-            android:visibility="visible"
-            android:hint="Message"  />
-
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/composition_map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"/>
+            android:visibility="visible" />
 
     </RelativeLayout>
 
@@ -104,6 +90,7 @@
             android:layout_weight="1"
             android:paddingRight="10dp"
             android:paddingLeft="10dp"
+            android:background="@drawable/button_curve"
             android:text="Discard"/>
         <Button
             android:id="@+id/send_composition"
@@ -112,6 +99,7 @@
             android:layout_weight="2"
             android:paddingRight="10dp"
             android:paddingLeft="10dp"
+            android:background="@drawable/button_curve"
             android:text="Send"/>
 
     </LinearLayout>

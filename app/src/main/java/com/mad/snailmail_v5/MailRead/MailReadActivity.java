@@ -45,7 +45,7 @@ public class MailReadActivity extends AppCompatActivity {
                     R.id.mail_read_fragment_frame);
         }
 
-        mMailReadPresenter = new MailReadPresenter(mailReadFragment);
+        mMailReadPresenter = new MailReadPresenter(mailReadFragment, this);
         mMailReadPresenter.setCurrentUser(mCurrentUser);
         mMailReadPresenter.passIntent(getIntent());
     }

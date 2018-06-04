@@ -12,7 +12,26 @@
     <string name="mystery_sender">Mystery Sender</string>
     <string name="mail_delivered">Your mail is waiting for you to pick it up!</string>
     <string name="mail_not_delivered">Your mail is in transit, be patient!</string>
-    <string name="mail_unavailable">Mail is not yet available to read!</string>
+    <string name="mail_unavailable">Mail is not yet available to read! But we will let you sneak a peek</string>
     <string name="delivery_location_needed">Delivery Location is needed to send mail!</string>
     <string name="simulation_mode">Simulation mode. Click anywhere on the map to set your current location.</string>
+    <string name="sydney_marker_title">Default Marker at Sydney</string>
+    <string name="sign_in">SignIn</string>
+    <string name="register">Register</string>
+    <string name="user_exists_toast">That username already exists. Pick another</string>
+    <string name="user_does_not_exists_toast">Incorrect username</string>
+    <string name="geofences_succesful">Geofences successfully added</string>
+    <string name="locator_hint">Long click on the map to set a marker. click the marker to select the Delivery Location</string>
+    <string name="long_click_to_locate">Press and Hold here to select a Delivery Location</string>
+    <string name="make_title">Title</string>
+    <string name="directive_text">To whom it may concern,</string>
+    <string name="write_message">Write your message here</string>
+    <string name="title">Title</string>
+    <string name="sender">Sender</string>
+    <string name="message">Message</string>
+    <string name="delivery_location">Delivery Location</string>
+    <string name="stop_roaming">Stop Roaming and check mail again</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude" >Longitude</string>
+    <string name="start_roaming">Start Roaming for mail</string>
 </resources>

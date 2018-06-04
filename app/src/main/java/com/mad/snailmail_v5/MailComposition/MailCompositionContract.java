@@ -1,5 +1,7 @@
 package com.mad.snailmail_v5.MailComposition;
 
+import android.content.Intent;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.mad.snailmail_v5.BaseInterfaces.BasePresenter;
@@ -22,11 +24,15 @@ public interface MailCompositionContract {
 
         void deliveryLocationClicked();
 
+        void passIntent(Intent intent);
+
     }
 
     interface View extends BaseView<Presenter> {
 
         void updateDeliveryLocation(String markerTitle);
+
+        void storeRecipient(String stringExtra);
 
     }
 }

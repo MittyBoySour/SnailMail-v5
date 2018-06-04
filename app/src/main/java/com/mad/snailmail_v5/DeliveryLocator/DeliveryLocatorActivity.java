@@ -1,8 +1,10 @@
 package com.mad.snailmail_v5.DeliveryLocator;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +12,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,20 +23,19 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mad.snailmail_v5.Model.User;
 import com.mad.snailmail_v5.R;
+import com.mad.snailmail_v5.SignIn.SignInActivity;
 
 import java.util.ArrayList;
 
-import static com.mad.snailmail_v5.Utilities.ActivityConstants.LocationConstants.MELBOURNE_LATITUDE;
-import static com.mad.snailmail_v5.Utilities.ActivityConstants.LocationConstants.MELBOURNE_LONGITUDE;
+import static com.mad.snailmail_v5.Utilities.ActivityConstants.ActivityKeys.CURRENT_USER_KEY;
+import static com.mad.snailmail_v5.Utilities.ActivityConstants.LocationConstants.SYDNEY_LATITUDE;
+import static com.mad.snailmail_v5.Utilities.ActivityConstants.LocationConstants.SYDNEY_LONGITUDE;
 
 public class DeliveryLocatorActivity extends AppCompatActivity implements OnMapReadyCallback,
         DeliveryLocatorContract.View {
 
     private FusedLocationProviderClient mFusedLocationClient;
-    private GeofencingClient mGeofencingClient;
-    private ArrayList<Geofence> mGeofenceList;
     private GoogleMap mMap;
-    private Marker mMarker;
     private ArrayList<Marker> mMarkerList;
 
     private static final String TAG = "MainActivity";
@@ -44,6 +43,7 @@ public class DeliveryLocatorActivity extends AppCompatActivity implements OnMapR
 
     private User mCurrentUser;
     private DeliveryLocatorPresenter mPresenter;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +51,14 @@ public class DeliveryLocatorActivity extends AppCompatActivity implements OnMapR
         setContentView(R.layout.activity_delivery_locator);
 
         mCurrentUser = new User();
-        mCurrentUser.setUsername("TestUser0");
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mCurrentUser.setUsername(mSharedPreferences.getString(CURRENT_USER_KEY, ""));
+
+        if (mCurrentUser.getUsername().contentEquals("")) {
+            startActivity(new Intent(this, SignInActivity.class));
+        }
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mGeofencingClient = LocationServices.getGeofencingClient(this);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.delivery_locator_map);
@@ -62,20 +66,13 @@ public class DeliveryLocatorActivity extends AppCompatActivity implements OnMapR
 
         mMarkerList = new ArrayList<>();
         mPresenter = new DeliveryLocatorPresenter(this, DeliveryLocatorActivity.this);
-        /*
-        mGeofenceList.add(new Geofence.Builder().setRequestId("first")
-                .setCircularRegion()
-                .build());
-        */
+
     }
 
     private GoogleMap.OnMapLongClickListener getLongClickListener() {
         return new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-                // remove any existing marker first
-                // maybe add favourite places
-
                 mPresenter.mapLongClicked(latLng);
             }
         };
@@ -102,23 +99,24 @@ public class DeliveryLocatorActivity extends AppCompatActivity implements OnMapR
         mPresenter.activityFinished();
     }
 
+    /**
+     * Centres the passed in map about a user's last location if they have one,
+     * or defaults to Sydney if not and places a marker
+     */
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
         mMap.setOnMapLongClickListener(getLongClickListener());
-        // may need to add marker click listener
         mMap.setOnMarkerClickListener(getMarkerClickListener());
-        // marker initially on sydney
-        LatLng sydney = new LatLng(MELBOURNE_LATITUDE, MELBOURNE_LONGITUDE);
+
+        LatLng sydney = new LatLng(SYDNEY_LATITUDE, SYDNEY_LONGITUDE);
         MarkerOptions options = new MarkerOptions().position(sydney)
-                .title("Marker in Sydney");
+                .title(String.valueOf(R.string.sydney_marker_title));
 
-        // get current location and set if not null
-
-        // Log.i(TAG, "onMapReady: sydney latitude :" + sydney.latitude + ", sydney.longitude: " + sydney.longitude);
+        Log.i(TAG, "onMapReady: sydney latitude :" + sydney.latitude + ", sydney.longitude: " + sydney.longitude);
         Marker marker = mMap.addMarker(options);
         mMarkerList.add(marker);
-        // Log.i(TAG, "onMapReady: mMarker latitude :" + mMarker.getPosition().latitude + ", mMarker longitude: " + mMarker.getPosition().longitude);
+        Log.i(TAG, "onMapReady: mMarker latitude :" + marker.getPosition().latitude + ", mMarker longitude: " + marker.getPosition().longitude);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
@@ -128,10 +126,8 @@ public class DeliveryLocatorActivity extends AppCompatActivity implements OnMapR
         return new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                // check marker and add either address or coordinates to geofence
                 mPresenter.markerClicked(marker);
-
-                // Log.i(TAG, "onMarkerClick: " + marker.getPosition().latitude);
+                Log.i(TAG, "onMarkerClick: " + marker.getPosition().latitude);
                 return false;
             }
         };
@@ -160,6 +156,11 @@ public class DeliveryLocatorActivity extends AppCompatActivity implements OnMapR
 
     @Override
     public void displayToast(Toast toast) {
+
+    }
+
+    @Override
+    public void setDataLoading(boolean dataLoading) {
 
     }
 

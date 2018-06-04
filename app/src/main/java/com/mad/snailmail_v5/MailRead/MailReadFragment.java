@@ -61,16 +61,21 @@ public class MailReadFragment extends Fragment implements MailReadContract.View 
 
     @Override
     public void displayDialogue(AlertDialog dialogue) {
-
+        dialogue.create();
     }
 
     @Override
     public void requestPermissions(String[] permissions) {
-
+        // no permissions necessary
     }
 
     @Override
     public void displayToast(Toast toast) {
+        toast.show();
+    }
+
+    @Override
+    public void setDataLoading(boolean dataLoading) {
 
     }
 

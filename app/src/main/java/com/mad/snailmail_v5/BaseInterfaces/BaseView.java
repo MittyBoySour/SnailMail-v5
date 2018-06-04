@@ -13,4 +13,6 @@ public interface BaseView<P> {
 
     void displayToast(Toast toast);
 
+    void setDataLoading(boolean dataLoading);
+
 }

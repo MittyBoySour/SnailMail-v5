@@ -9,13 +9,25 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="sender" />
+        android:fontFamily="@font/meie_script"
+        android:text="@string/sender"
+        android:layout_marginLeft="@dimen/form_margin"
+        android:layout_marginRight="@dimen/form_margin"
+        android:textSize="@dimen/item_text_size" />
 
     <TextView
         android:id="@+id/mail_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
-        android:text="title"/>
+        android:fontFamily="@font/marck_script"
+        android:lineSpacingExtra="12sp"
+        android:text="@string/title"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:layout_marginLeft="@dimen/form_margin"
+        android:layout_marginRight="@dimen/form_margin"
+        android:textSize="@dimen/item_text_size"
+        android:textStyle="bold" />
 
 </LinearLayout>
